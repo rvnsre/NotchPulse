@@ -1,0 +1,126 @@
+name: Package desktop releases
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # Resolve once so all three platforms use the same dependency graph.
+  resolve:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: python scripts/resolve_dependencies.py
+      - name: Check tag against workspace version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: python3 scripts/check_version.py "${GITHUB_REF_NAME}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-lock
+          path: Cargo.lock
+
+  package:
+    needs: resolve
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bundles: nsis
+            artifact: windows-x64
+          - os: macos-14
+            target: universal-apple-darwin
+            bundles: dmg
+            artifact: macos-universal
+          - os: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            bundles: rpm
+            artifact: linux-x64
+    runs-on: ${{ matrix.os }}
+    env:
+      # Populate these repository secrets for signed and notarized Mac releases.
+      APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-lock
+      - name: Linux dependencies (glibc 2.35 baseline)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libssl-dev libayatana-appindicator3-dev librsvg2-dev patchelf rpm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: macOS universal targets
+        if: runner.os == 'macOS'
+        run: rustup target add aarch64-apple-darwin x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: Build tools
+        run: |
+          cargo install trunk --version 0.21.14 --locked
+          cargo install tauri-cli --version 2.8.4 --locked
+      - name: Test core
+        run: cargo test --locked -p pulse-core
+      - name: Build frontend
+        run: trunk build --release
+      - name: Test native backend
+        run: cargo test --locked -p notchpulse
+      - name: Package
+        run: cargo tauri build --target ${{ matrix.target }} --bundles ${{ matrix.bundles }} -- --locked
+      - name: Verify universal architecture
+        if: runner.os == 'macOS'
+        run: lipo -verify_arch arm64 x86_64 target/universal-apple-darwin/release/bundle/macos/NotchPulse.app/Contents/MacOS/notchpulse
+      - name: Stage installers, standalone EXE and checksums
+        run: python scripts/stage_release.py ${{ matrix.target }} ${{ matrix.artifact }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notchpulse-${{ matrix.artifact }}
+          path: release-assets/${{ matrix.artifact }}/*
+          if-no-files-found: error
+          retention-days: 30
+
+  draft-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: package
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: notchpulse-*
+          path: assets
+          merge-multiple: true
+      - name: Create reviewable draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --draft --verify-tag --title "NotchPulse $TAG" --generate-notes
+          fi
+          gh release upload "$TAG" assets/* --clobber
+

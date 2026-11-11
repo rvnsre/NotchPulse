@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>NotchPulse</title>
+    <link data-trunk rel="rust" data-wasm-opt="s" href="Cargo.toml">
+    <link data-trunk rel="css" href="style.css">
+  </head>
+  <body>
+    <main id="island" aria-label="NotchPulse repository feed">
+      <div id="surface" aria-hidden="true"></div>
+      <button id="compact" aria-label="Expand NotchPulse" aria-expanded="false"><span class="signal">⌁</span><b>NotchPulse</b><span class="compact-meta">20K+</span></button>
+      <section id="content" aria-hidden="true" inert></section>
+      <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+    </main>
+  </body>
+</html>
+

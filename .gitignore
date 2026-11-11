@@ -1,0 +1,11 @@
+/target/
+/dist/
+/.tools/
+*.log
+.DS_Store
+.env
+/src-tauri/gen/
+/release-assets/
+__pycache__/
+*.pyc
+

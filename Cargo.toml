@@ -1,0 +1,23 @@
+[workspace]
+members = ["crates/pulse-core", "crates/pulse-ui", "src-tauri"]
+default-members = ["crates/pulse-core"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.85"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+pulse-core = { path = "crates/pulse-core" }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = "s"
+strip = true
+panic = "abort"
+

@@ -1,0 +1,20 @@
+name: Dependency advisories
+on:
+  schedule:
+    - cron: '27 7 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: dtolnay/rust-toolchain@stable
+      - run: python scripts/resolve_dependencies.py
+      - run: cargo install cargo-audit --locked
+      - run: cargo audit
+

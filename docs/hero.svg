@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+ <title id="title">NotchPulse</title>
+ <desc id="desc">A lime and graphite desktop island with a Rust repository card. Product illustration, not a runtime screenshot.</desc>
+ <defs>
+  <radialGradient id="glow"><stop stop-color="#c1ff83" stop-opacity=".14"/><stop offset="1" stop-color="#c1ff83" stop-opacity="0"/></radialGradient>
+  <linearGradient id="panel" x2=".8" y2="1"><stop stop-color="#1b1e23"/><stop offset="1" stop-color="#0b0d0f"/></linearGradient>
+  <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M56 0H0V56" fill="none" stroke="#ffffff" stroke-opacity=".025"/></pattern>
+ </defs>
+ <rect width="1280" height="720" rx="24" fill="#0b0d10"/>
+ <rect width="1280" height="720" rx="24" fill="url(#grid)"/>
+ <ellipse cx="970" cy="260" rx="510" ry="420" fill="url(#glow)"/>
+ <g font-family="Inter,Segoe UI,Arial,sans-serif">
+  <rect x="62" y="55" width="45" height="28" rx="14" fill="#c1ff83"/>
+  <path d="M71 69h7l4-7 5 15 5-11 4 3h4" fill="none" stroke="#182310" stroke-width="2.8" stroke-linejoin="round"/>
+  <text x="121" y="76" fill="#eff3eb" font-size="22" font-weight="600" letter-spacing="-.5">NotchPulse</text>
+  <text x="1178" y="74" text-anchor="end" fill="#7d867a" font-size="11" letter-spacing="2">RUST / TAURI / WASM</text>
+  <rect x="64" y="176" width="200" height="27" rx="13.5" fill="#c1ff8310" stroke="#c1ff832c"/>
+  <circle cx="80" cy="189.5" r="3" fill="#c1ff83"/>
+  <text x="92" y="193.5" fill="#c1ff83" font-size="9" letter-spacing="1.8">THE OPEN SOURCE SIGNAL</text>
+  <text x="60" y="281" fill="#f2f5ee" font-size="68" font-weight="650" letter-spacing="-4">The right repo.</text>
+  <text x="60" y="359" fill="#c1ff83" font-size="68" font-weight="650" letter-spacing="-4">One quiet island.</text>
+  <text x="64" y="412" fill="#949c97" font-size="17">Extraordinary projects. Native commands.</text>
+  <text x="64" y="440" fill="#949c97" font-size="17">Always a little closer to your next idea.</text>
+  <g transform="translate(714 183)">
+   <rect x="108" y="-52" width="234" height="43" rx="21.5" fill="#080a0b" stroke="#333b32"/>
+   <circle cx="132" cy="-30" r="4" fill="#c1ff83"/>
+   <text x="147" y="-26" fill="#e9eee5" font-size="12" font-weight="600">NotchPulse</text>
+   <text x="290" y="-26" fill="#c1ff83" font-size="9" letter-spacing="1">20K+</text>
+   <rect width="452" height="346" rx="30" fill="url(#panel)" stroke="#3b4339"/>
+   <circle cx="27" cy="28" r="3" fill="#c1ff83"/>
+   <text x="40" y="32" fill="#f1f3ed" font-size="9" letter-spacing="2">NOTCHPULSE</text>
+   <text x="356" y="32" fill="#828c82" font-size="10">Settings</text>
+   <path d="M23 52H429" stroke="#30362f"/>
+   <text x="25" y="79" fill="#8b9889" font-size="8" letter-spacing="1.6">HANDPICKED BY YOUR ENVIRONMENT</text>
+   <text x="25" y="122" fill="#f0f3ec" font-size="23" font-weight="600" letter-spacing="-.7">BurntSushi/ripgrep</text>
+   <text x="25" y="151" fill="#a4aca0" font-size="12">Search your code at the speed of thought.</text>
+   <text x="25" y="181" fill="#edc7a0" font-size="10">● Rust</text>
+   <text x="94" y="181" fill="#bfc9b9" font-size="10">☆ 20K+ stars</text>
+   <rect x="205" y="167" width="56" height="20" rx="5" fill="#242a23"/>
+   <text x="215" y="180" fill="#929d8e" font-size="9">search</text>
+   <text x="25" y="214" fill="#768371" font-size="8" letter-spacing="1">YOUR NATIVE ENVIRONMENT</text>
+   <rect x="24" y="226" width="404" height="40" rx="9" fill="#070909" stroke="#30382d"/>
+   <text x="38" y="251" fill="#c3d99f" font-family="Consolas,monospace" font-size="12">brew install ripgrep</text>
+   <text x="387" y="250" fill="#acb7a6" font-size="10">Copy</text>
+   <rect x="24" y="278" width="195" height="34" rx="8" fill="#242a24"/>
+   <text x="62" y="300" fill="#d7dfd2" font-size="11">View repository ↗</text>
+   <rect x="229" y="278" width="199" height="34" rx="8" fill="#c1ff83"/>
+   <text x="280" y="300" fill="#18230d" font-size="11" font-weight="600">Run in terminal ↗</text>
+   <text x="26" y="333" fill="#6d7b68" font-size="8">PRODUCT ILLUSTRATION · PLATFORM COMMANDS ADAPT AUTOMATICALLY</text>
+  </g>
+  <path d="M64 582H1216" stroke="#272d27"/>
+  <text x="64" y="623" fill="#d8e3d1" font-size="13" font-weight="600">20,000+ stars</text>
+  <text x="64" y="647" fill="#717d6c" font-size="11">A high bar for every card.</text>
+  <text x="398" y="623" fill="#d8e3d1" font-size="13" font-weight="600">Three platforms. One pulse.</text>
+  <text x="398" y="647" fill="#717d6c" font-size="11">macOS · Windows · Linux</text>
+  <text x="808" y="623" fill="#d8e3d1" font-size="13" font-weight="600">Personal by invitation.</text>
+  <text x="808" y="647" fill="#717d6c" font-size="11">Local habits. No cloud profile.</text>
+ </g>
+</svg>

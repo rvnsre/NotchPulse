@@ -37,7 +37,7 @@ No browser tabs to babysit. No cloud profile. No JavaScript application framewor
 Install [Rust stable](https://rustup.rs/) and the [Tauri native prerequisites](https://v2.tauri.app/start/prerequisites/) for your OS. Windows needs the MSVC C++ build tools and WebView2; Linux needs WebKitGTK **4.1**, GTK3 and an app-indicator implementation; macOS needs Xcode command-line tools.
 
 ```sh
-git clone <your-repository-url> NotchPulse
+git clone https://github.com/rvnsre/NotchPulse.git NotchPulse
 cd NotchPulse
 rustup target add wasm32-unknown-unknown
 cargo install trunk --version 0.21.14 --locked

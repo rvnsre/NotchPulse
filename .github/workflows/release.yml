@@ -89,7 +89,16 @@ jobs:
       - name: Test native backend
         run: cargo test --locked -p notchpulse
       - name: Package
-        run: cargo tauri build --target ${{ matrix.target }} --bundles ${{ matrix.bundles }} -- --locked
+        shell: bash
+        run: |
+          # Tauri treats an empty signing variable as a configured credential.
+          # Leave absent credentials unset; never suppress invalid supplied ones.
+          for name in APPLE_CERTIFICATE APPLE_CERTIFICATE_PASSWORD APPLE_SIGNING_IDENTITY APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; do
+            if [ -z "${!name}" ]; then
+              unset "$name"
+            fi
+          done
+          cargo tauri build --target ${{ matrix.target }} --bundles ${{ matrix.bundles }} -- --locked
       - name: Verify universal architecture
         if: runner.os == 'macOS'
         run: lipo -verify_arch arm64 x86_64 target/universal-apple-darwin/release/bundle/macos/NotchPulse.app/Contents/MacOS/notchpulse
